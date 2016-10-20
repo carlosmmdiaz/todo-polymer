@@ -54,11 +54,11 @@
 				this.seconds = this.addZero(time.getSeconds());
 			},
 			update: function() {
-				this.seconds = this.updateTimeUnit(this.seconds, 60);
+				this.seconds = this.updateTimeUnit(this.seconds, '60');
 				if(this.seconds === '00') {
-					this.minutes = this.updateTimeUnit(this.minutes, 60);
+					this.minutes = this.updateTimeUnit(this.minutes, '60');
 					if(this.minutes === '00') {
-						this.hours = this.updateTimeUnit(this.hours, 24);
+						this.hours = this.updateTimeUnit(this.hours, '24');
 					}
 				}
 			},
