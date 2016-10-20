@@ -1,0 +1,78 @@
+<link rel="import" href="../polymer/polymer.html">
+<dom-module id="my-clock">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+			.container {
+				background: black;
+				color: white;
+				padding: 15px;
+				text-align: center;
+			}
+			iron-icon {
+				height: 40px;
+				width: 40px;
+			}
+			.time {
+				margin-top: 10px;
+				font-size: 24px;		
+			}
+		</style>
+		<div class="container">
+			<iron-icon icon="device:access-time"></iron-icon>
+			<div class="time">{{hours}} : {{minutes}} : {{seconds}}</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'my-clock',
+			properties: {
+				hours: {
+					type: String
+				},
+				minutes: {
+					type: String
+				},
+				seconds: {
+					type: String
+				}
+			},
+			ready: function() {
+				this.setTime();
+				var clock = this;
+				setInterval(function(){
+					clock.update()
+				}, 1000);  
+			},
+			setTime: function() {
+				var time = new Date();
+				this.hours = time.getHours();
+				this.minutes = time.getMinutes();
+				this.seconds = time.getSeconds();
+			},
+			update: function() {
+				this.seconds = this.updateTimeUnit(this.seconds, 60);
+				if(this.seconds === '00') {
+					this.minutes = this.updateTimeUnit(this.minutes, 60);
+					if(this.minutes === '00') {
+						this.hours = this.updateTimeUnit(this.hours, 24);
+					}
+				}
+			},
+			updateTimeUnit: function(timeUnit, limit) {
+				var result;
+				timeUnit = parseInt(timeUnit) + 1;
+				if(timeUnit < 10) {
+					result = '0' + String(timeUnit);
+				} else if(timeUnit === limit) {
+					result = '00';
+				} else {
+					result = String(timeUnit);
+				}
+				return result;
+			}
+		});
+	</script>
+</dom-module>
