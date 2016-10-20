@@ -40,17 +40,18 @@
 				}
 			},
 			ready: function() {
-				this.setTime();
 				var clock = this;
-				setInterval(function(){
-					clock.update()
+				clock.setTime();
+				clock.update();
+				setInterval(function() { // Interval to keep going the clock
+					clock.update();
 				}, 1000);  
 			},
 			setTime: function() {
 				var time = new Date();
-				this.hours = time.getHours();
-				this.minutes = time.getMinutes();
-				this.seconds = time.getSeconds();
+				this.hours = this.addZero(time.getHours());
+				this.minutes = this.addZero(time.getMinutes());
+				this.seconds = this.addZero(time.getSeconds());
 			},
 			update: function() {
 				this.seconds = this.updateTimeUnit(this.seconds, 60);
@@ -61,17 +62,22 @@
 					}
 				}
 			},
-			updateTimeUnit: function(timeUnit, limit) {
+			addZero: function(timeUnit) {
 				var result;
-				timeUnit = parseInt(timeUnit) + 1;
 				if(timeUnit < 10) {
 					result = '0' + String(timeUnit);
-				} else if(timeUnit === limit) {
-					result = '00';
 				} else {
 					result = String(timeUnit);
 				}
 				return result;
+			},
+			updateTimeUnit: function(timeUnit, limit) {
+				timeUnit = parseInt(timeUnit) + 1; // Increment
+				timeUnit = this.addZero(timeUnit); // format
+				if(timeUnit === limit) {
+					timeUnit = '00';
+				}
+				return timeUnit;
 			}
 		});
 	</script>
